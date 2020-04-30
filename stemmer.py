@@ -1,6 +1,7 @@
 import re
 from string import punctuation
 
+
 class Stemmer:
     """Stemmer class definition
 
