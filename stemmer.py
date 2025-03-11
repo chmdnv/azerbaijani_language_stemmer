@@ -56,7 +56,7 @@ class Stemmer:
         """Loads the words from the word.txt file into memory
         """
         # Open words.txt file in read mode with utf-8 encoding.
-        with open("words.txt", "r", encoding="utf8") as words_file:
+        with open("azerbaijani_language_stemmer/words.txt", "r", encoding="utf8") as words_file:
             # Iterate over each line in the words.txt file
             for word in words_file:
                 # Trim the spaces and newline characters from the string before adding to the list
@@ -67,19 +67,20 @@ class Stemmer:
         """Loads the suffixes from the suffix.txt file into memory
         """
         # Open suffix.txt file in read mode with utf-8 encoding
-        with open("suffix.txt", "r", encoding="utf8") as suffix_file:
+        with open("azerbaijani_language_stemmer/suffix.txt", "r", encoding="utf8") as suffix_file:
             # Iterate over each line in the suffix.txt file
             for suffix in suffix_file:
                 # Trim the spaces and newline characters from the string before adding to the list
                 self.suffixes.append(suffix.strip())
         self.suffixes.sort(key=len, reverse=True)
 
-    def preprocess(self, file):
+    def preprocess(self, file=None, my_text=None):
         """Preprocess your text: remove punctuation, replace AZ/EN chars, lowercase the letters, remove special chars,
         trim the spaces and newlines and split the text by space/s
         """
-        with open(file, 'r', encoding="utf-8-sig") as text:
-            my_text = text.read()
+        if file:
+            with open(file, 'r', encoding="utf-8-sig") as text:
+                my_text = text.read()
 
         replace_list = {
             "İ": "i",
@@ -103,7 +104,7 @@ class Stemmer:
         my_words = []
         for word in my_text:
             my_words.append(''.join(c for c in word if (c not in punctuation) or (c == '-')))
-        print(my_words)
+        # print(my_words)
         return my_words
 
     def suffix(self, word):
@@ -184,5 +185,10 @@ class Stemmer:
             # Append the stem of the current word to the list of stems
             list_of_stems.append(selected_stem)
         # Return the updated list.
-        print(list_of_stems)
+        # print(list_of_stems)
         return list_of_stems
+
+    def text_to_stemms(self, text: str):
+        tokens = self.preprocess(my_text=text)
+        stemms = self.stem_words(tokens)
+        return stemms
